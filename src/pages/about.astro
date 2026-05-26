@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const educations = (await getCollection('education', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
+
+const formatDate = (date: Date) => date.toISOString().slice(0, 7);
+---
+
+<BaseLayout title="关于">
+  <h1>关于我</h1>
+  <p>[占位] 简单介绍自己的背景、兴趣和目标。</p>
+
+  <h2>教育背景</h2>
+  <ul>
+    {educations.map((edu) => (
+      <li>
+        <h3>{edu.data.school}</h3>
+        <p>{edu.data.degree} · {edu.data.major}</p>
+        <p>
+          {formatDate(edu.data.startDate)} – {edu.data.endDate ? formatDate(edu.data.endDate) : '在读'}
+          {edu.data.gpa && ` · GPA ${edu.data.gpa}`}
+        </p>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

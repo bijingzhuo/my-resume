@@ -1,0 +1,45 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) => !data.draft);
+  return projects.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const formatDate = (date: Date) => date.toISOString().slice(0, 7);
+
+const statusLabel: Record<string, string> = {
+  'completed': '已完成',
+  'in-progress': '进行中',
+  'archived': '已归档',
+};
+---
+
+<BaseLayout title={entry.data.title}>
+  <a href="/projects">← 返回项目列表</a>
+
+  <h1>{entry.data.title}</h1>
+  <p>{entry.data.description}</p>
+
+  <p>
+    {formatDate(entry.data.startDate)}
+    {entry.data.endDate && ` – ${formatDate(entry.data.endDate)}`}
+    {entry.data.status && ` · ${statusLabel[entry.data.status] ?? entry.data.status}`}
+  </p>
+
+  <p>{entry.data.tags.join(' · ')}</p>
+
+  {entry.data.url && <p><a href={entry.data.url} target="_blank">查看演示</a></p>}
+  {entry.data.repo && <p><a href={entry.data.repo} target="_blank">查看源码</a></p>}
+
+  <hr />
+
+  <Content />
+</BaseLayout>

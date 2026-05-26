@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// 过滤草稿，按 startDate 倒序排列
+const projects = (await getCollection('projects', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
+
+const statusLabel: Record<string, string> = {
+  'completed': '已完成',
+  'in-progress': '进行中',
+  'archived': '已归档',
+};
+
+const formatDate = (date: Date) => date.toISOString().slice(0, 7);
+---
+
+<BaseLayout title="项目">
+  <h1>项目</h1>
+  <ul>
+    {projects.map((project) => (
+      <li>
+        <a href={`/projects/${project.id}`}>{project.data.title}</a>
+        <span>{formatDate(project.data.startDate)}</span>
+        {project.data.endDate && <span> – {formatDate(project.data.endDate)}</span>}
+        {project.data.status && <span>[{statusLabel[project.data.status] ?? project.data.status}]</span>}
+        <p>{project.data.description}</p>
+        <p>{project.data.tags.join(' · ')}</p>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
