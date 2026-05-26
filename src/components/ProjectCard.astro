@@ -1,0 +1,141 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, description, startDate, endDate, tags, status } = project.data;
+
+const formatDate = (date: Date) => date.toISOString().slice(0, 7);
+
+const statusMeta: Record<string, { label: string; cls: string }> = {
+  'in-progress': { label: '进行中', cls: 'badge--active'   },
+  'completed':   { label: '已完成', cls: 'badge--done'     },
+  'archived':    { label: '已归档', cls: 'badge--archived' },
+};
+---
+
+<article class="card">
+  <div class="card-header">
+    <a href={`/projects/${project.id}`} class="card-title">{title}</a>
+    {status && (
+      <span class={`badge ${statusMeta[status].cls}`}>
+        {statusMeta[status].label}
+      </span>
+    )}
+  </div>
+
+  <p class="card-desc">{description}</p>
+
+  <p class="card-dates">
+    {formatDate(startDate)}
+    {endDate ? ` – ${formatDate(endDate)}` : ' – 至今'}
+  </p>
+
+  <div class="tags">
+    {tags.map((tag) => <span class="tag">{tag}</span>)}
+  </div>
+</article>
+
+<style>
+  .card {
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+    transition: border-color var(--transition), background-color var(--transition);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .card:hover {
+    border-color: var(--color-fg-muted);
+    background-color: var(--color-bg-subtle);
+  }
+
+  /* 标题行：名称左、徽章右 */
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .card-title {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-fg);
+    text-decoration: none;
+    transition: color var(--transition);
+    flex: 1;
+  }
+
+  .card-title:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  /* 状态徽章 */
+  .badge {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 2px var(--space-1);
+    border-radius: var(--radius-sm);
+    border: 1px solid;
+  }
+
+  .badge--active {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    background-color: var(--color-bg-subtle);
+  }
+
+  .badge--done {
+    color: var(--color-success);
+    border-color: var(--color-success);
+    background-color: var(--color-bg-subtle);
+  }
+
+  .badge--archived {
+    color: var(--color-fg-muted);
+    border-color: var(--color-border);
+    background-color: var(--color-bg-subtle);
+  }
+
+  /* 描述 */
+  .card-desc {
+    font-size: var(--text-sm);
+    color: var(--color-fg-muted);
+    margin-bottom: 0;
+    line-height: 1.5;
+  }
+
+  /* 日期 */
+  .card-dates {
+    font-size: var(--text-sm);
+    color: var(--color-fg-muted);
+    margin-bottom: 0;
+  }
+
+  /* 标签区域 */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-top: 4px;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    color: var(--color-fg-muted);
+    background-color: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    padding: 2px var(--space-1);
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), border-color var(--transition);
+  }
+</style>

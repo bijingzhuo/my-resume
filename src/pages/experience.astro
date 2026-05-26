@@ -1,27 +1,31 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ExperienceItem from '../components/ExperienceItem.astro';
 
 const experiences = (await getCollection('experience', ({ data }) => !data.draft))
   .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
-
-const formatDate = (date: Date) => date.toISOString().slice(0, 7);
 ---
 
 <BaseLayout title="经历">
   <h1>工作经历</h1>
-  <ul>
-    {experiences.map((exp) => (
-      <li>
-        <h2>{exp.data.role}</h2>
-        <p>
-          {exp.data.company}
-          {exp.data.location && ` · ${exp.data.location}`}
-        </p>
-        <p>
-          {formatDate(exp.data.startDate)} – {exp.data.endDate ? formatDate(exp.data.endDate) : '至今'}
-        </p>
-      </li>
+  <p class="page-desc">实习与科研经历，按时间倒序排列。</p>
+
+  <div class="timeline">
+    {experiences.map((entry) => (
+      <ExperienceItem entry={entry} />
     ))}
-  </ul>
+  </div>
 </BaseLayout>
+
+<style>
+  .page-desc {
+    color: var(--color-fg-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  /* timeline 容器不需要额外样式，间距由 ExperienceItem 内部的 padding-bottom 控制 */
+  .timeline {
+    margin-top: var(--space-2);
+  }
+</style>
