@@ -13,33 +13,244 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
+const { title, description, startDate, endDate, status, tags, url, repo } = entry.data;
+
 const formatDate = (date: Date) => date.toISOString().slice(0, 7);
 
-const statusLabel: Record<string, string> = {
-  'completed': '已完成',
-  'in-progress': '进行中',
-  'archived': '已归档',
+const statusMeta: Record<string, { label: string; cls: string }> = {
+  'in-progress': { label: '进行中', cls: 'badge--active'   },
+  'completed':   { label: '已完成', cls: 'badge--done'     },
+  'archived':    { label: '已归档', cls: 'badge--archived' },
 };
 ---
 
-<BaseLayout title={entry.data.title}>
-  <a href="/projects">← 返回项目列表</a>
+<BaseLayout title={title}>
+  <a href={`${import.meta.env.BASE_URL}projects`} class="back-link">← 所有项目</a>
 
-  <h1>{entry.data.title}</h1>
-  <p>{entry.data.description}</p>
+  <header class="project-header">
+    <h1>{title}</h1>
+    <p class="project-desc">{description}</p>
 
-  <p>
-    {formatDate(entry.data.startDate)}
-    {entry.data.endDate && ` – ${formatDate(entry.data.endDate)}`}
-    {entry.data.status && ` · ${statusLabel[entry.data.status] ?? entry.data.status}`}
-  </p>
+    <div class="project-meta">
+      <span class="dates">
+        {formatDate(startDate)}{endDate ? ` – ${formatDate(endDate)}` : ' – 至今'}
+      </span>
+      {status && (
+        <span class={`badge ${statusMeta[status].cls}`}>
+          {statusMeta[status].label}
+        </span>
+      )}
+      <div class="tags">
+        {tags.map((tag) => <span class="tag">{tag}</span>)}
+      </div>
+    </div>
 
-  <p>{entry.data.tags.join(' · ')}</p>
+    {(url || repo) && (
+      <div class="project-links">
+        {url  && <a href={url}  target="_blank" rel="noopener noreferrer">查看演示 ↗</a>}
+        {repo && <a href={repo} target="_blank" rel="noopener noreferrer">查看源码 ↗</a>}
+      </div>
+    )}
+  </header>
 
-  {entry.data.url && <p><a href={entry.data.url} target="_blank">查看演示</a></p>}
-  {entry.data.repo && <p><a href={entry.data.repo} target="_blank">查看源码</a></p>}
+  <hr class="divider" />
 
-  <hr />
-
-  <Content />
+  <div class="prose">
+    <Content />
+  </div>
 </BaseLayout>
+
+<style>
+  /* ── 返回链接 ── */
+  .back-link {
+    display: inline-block;
+    font-size: var(--text-sm);
+    color: var(--color-fg-muted);
+    margin-bottom: var(--space-3);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .back-link:hover {
+    color: var(--color-fg);
+    text-decoration: none;
+  }
+
+  /* ── 标题区 ── */
+  .project-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  /* h1 由 global.css 控制，不重复定义 */
+
+  .project-desc {
+    font-size: var(--text-lg);
+    color: var(--color-fg-muted);
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  /* 元信息行：日期 + 徽章 + 标签 */
+  .project-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .dates {
+    font-size: var(--text-sm);
+    color: var(--color-fg-muted);
+  }
+
+  /* 状态徽章 */
+  .badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 2px var(--space-1);
+    border-radius: var(--radius-sm);
+    border: 1px solid;
+  }
+
+  .badge--active   { color: var(--color-accent);  border-color: var(--color-accent);  background-color: var(--color-bg-subtle); }
+  .badge--done     { color: var(--color-success); border-color: var(--color-success); background-color: var(--color-bg-subtle); }
+  .badge--archived { color: var(--color-fg-muted); border-color: var(--color-border); background-color: var(--color-bg-subtle); }
+
+  /* 标签 */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    color: var(--color-fg-muted);
+    background-color: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    padding: 2px var(--space-1);
+    border-radius: var(--radius-sm);
+  }
+
+  /* 演示 / 源码链接 */
+  .project-links {
+    display: flex;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+  }
+
+  .project-links a {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .project-links a:hover {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+  }
+
+  /* 分隔线 */
+  .divider {
+    margin: var(--space-3) 0;
+  }
+
+  /* ── Markdown 正文区 ── */
+
+  /*
+    h2/h3 的 margin-top 在 global.css 里已设置，
+    这里只覆盖第一个标题不要额外上方间距。
+  */
+  .prose :global(> :first-child) {
+    margin-top: 0;
+  }
+
+  .prose :global(p) {
+    line-height: 1.75;
+    margin-bottom: var(--space-2);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: var(--space-3);
+    margin-bottom: var(--space-2);
+  }
+
+  .prose :global(li) {
+    line-height: 1.7;
+    margin-bottom: 6px;
+  }
+
+  /* 行内代码 */
+  .prose :global(code) {
+    font-family: 'Menlo', 'Consolas', 'Courier New', monospace;
+    font-size: 0.875em;
+    background-color: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    padding: 1px 5px;
+    border-radius: var(--radius-sm);
+  }
+
+  /*
+    代码块：固定深色背景，两种主题下都保持一致。
+    pre code 重置行内 code 的样式。
+  */
+  .prose :global(pre) {
+    background-color: #1e1e1e;
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-3);
+    overflow-x: auto;
+    margin-bottom: var(--space-2);
+  }
+
+  .prose :global(pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: var(--text-sm);
+    color: #d4d4d4;
+    white-space: pre;
+  }
+
+  /* 引用块 */
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--color-accent);
+    padding-left: var(--space-2);
+    color: var(--color-fg-muted);
+    font-style: italic;
+    margin: var(--space-2) 0;
+  }
+
+  .prose :global(blockquote p) {
+    margin-bottom: 0;
+  }
+
+  /* 图片 */
+  .prose :global(img) {
+    max-width: 100%;
+    border-radius: var(--radius-md);
+    margin: var(--space-2) 0;
+  }
+
+  /* 正文链接 */
+  .prose :global(a) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color var(--transition);
+  }
+
+  .prose :global(a:hover) {
+    text-decoration-color: var(--color-accent);
+  }
+
+  /* 外链：CSS 方式加 ↗ 标记，不依赖 JS */
+  .prose :global(a[href^="http"])::after {
+    content: ' ↗';
+    font-size: 0.75em;
+    opacity: 0.6;
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'education'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const { school, degree, major, startDate, endDate, gpa } = entry.data;
+
+const formatDate = (date: Date) => date.toISOString().slice(0, 7);
+---
+
+<div class="edu-item">
+  <div class="item-school">{school}</div>
+  <div class="item-program">{degree} · {major}</div>
+  <div class="item-sub">
+    <span>{formatDate(startDate)} – {endDate ? formatDate(endDate) : '在读'}</span>
+    {gpa && <span class="item-gpa"> · GPA {gpa}</span>}
+  </div>
+  <div class="item-content">
+    <Content />
+  </div>
+</div>
+
+<style>
+  /* 和 ExperienceItem 同样的时间线结构，但略简化 */
+  .edu-item {
+    position: relative;
+    margin-left: 12px;
+    padding-left: var(--space-3);
+    padding-bottom: var(--space-3);
+    border-left: 2px solid var(--color-border);
+    transition: border-color var(--transition);
+  }
+
+  /* 圆点：空心，区别于 experience 的实心点 */
+  .edu-item::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--color-bg);
+    border: 2px solid var(--color-accent);
+    transition: border-color var(--transition), background-color var(--transition);
+  }
+
+  .item-school {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-fg);
+    line-height: 1.4;
+  }
+
+  .item-program {
+    font-size: var(--text-sm);
+    color: var(--color-fg-muted);
+    margin-top: 2px;
+  }
+
+  .item-sub {
+    font-size: var(--text-sm);
+    color: var(--color-fg-muted);
+    margin-top: 2px;
+  }
+
+  .item-gpa {
+    color: var(--color-fg-muted);
+  }
+
+  .item-content {
+    margin-top: var(--space-1);
+    font-size: var(--text-sm);
+    color: var(--color-fg-muted);
+  }
+
+  .item-content :global(p:last-child),
+  .item-content :global(ul:last-child) {
+    margin-bottom: 0;
+  }
+</style>
