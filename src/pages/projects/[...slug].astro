@@ -65,6 +65,7 @@ const statusMeta: Record<string, { label: string; cls: string }> = {
   .back-link {
     display: inline-block;
     font-size: var(--text-sm);
+    font-weight: 500;
     color: var(--color-fg-muted);
     margin-bottom: var(--space-3);
     text-decoration: none;
@@ -82,6 +83,8 @@ const statusMeta: Record<string, { label: string; cls: string }> = {
     flex-direction: column;
     gap: var(--space-2);
     margin-bottom: var(--space-3);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
   }
 
   /* h1 由 global.css 控制，不重复定义 */
@@ -127,12 +130,14 @@ const statusMeta: Record<string, { label: string; cls: string }> = {
   }
 
   .tag {
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
     color: var(--color-fg-muted);
     background-color: var(--color-bg-subtle);
     border: 1px solid var(--color-border);
     padding: 2px var(--space-1);
-    border-radius: var(--radius-sm);
+    border-radius: 100px;
   }
 
   /* 演示 / 源码链接 */
@@ -153,9 +158,8 @@ const statusMeta: Record<string, { label: string; cls: string }> = {
     text-decoration: underline;
   }
 
-  /* 分隔线 */
   .divider {
-    margin: var(--space-3) 0;
+    display: none;
   }
 
   /* ── Markdown 正文区 ── */

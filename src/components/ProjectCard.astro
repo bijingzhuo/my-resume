@@ -46,16 +46,19 @@ const statusMeta: Record<string, { label: string; cls: string }> = {
     padding: var(--space-3);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    background-color: var(--color-bg);
-    transition: border-color var(--transition), background-color var(--transition);
+    background-color: var(--color-bg-elevated);
+    box-shadow: var(--shadow-card);
+    transition: border-color var(--transition), background-color var(--transition),
+                box-shadow var(--transition), transform var(--transition);
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
   }
 
   .card:hover {
-    border-color: var(--color-fg-muted);
-    background-color: var(--color-bg-subtle);
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-1px);
   }
 
   /* 标题行：名称左、徽章右 */
@@ -69,6 +72,7 @@ const statusMeta: Record<string, { label: string; cls: string }> = {
   .card-title {
     font-size: var(--text-lg);
     font-weight: 600;
+    letter-spacing: -0.01em;
     color: var(--color-fg);
     text-decoration: none;
     transition: color var(--transition);
@@ -132,12 +136,14 @@ const statusMeta: Record<string, { label: string; cls: string }> = {
   }
 
   .tag {
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
     color: var(--color-fg-muted);
     background-color: var(--color-bg-subtle);
     border: 1px solid var(--color-border);
     padding: 2px var(--space-1);
-    border-radius: var(--radius-sm);
+    border-radius: 100px;
     transition: color var(--transition), border-color var(--transition);
   }
 </style>
