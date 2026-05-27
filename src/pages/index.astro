@@ -20,8 +20,8 @@ const featured = (await getCollection('projects', ({ data }) => !data.draft && d
       src={`${import.meta.env.BASE_URL}jingzhuo.jpg`}
       alt="毕经卓"
       class="hero-photo"
-      width="112"
-      height="112"
+      width="160"
+      height="160"
     />
   </section>
 
@@ -86,8 +86,8 @@ const featured = (await getCollection('projects', ({ data }) => !data.draft && d
   }
 
   .hero-photo {
-    width: 112px;
-    height: 112px;
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--color-border);
