@@ -18,7 +18,7 @@ const formatDate = (date: Date) => date.toISOString().slice(0, 7);
   <div class="item-role">{role}</div>
   <div class="item-company">{company}</div>
   <div class="item-sub">
-    <span>{formatDate(startDate)} – {endDate ? formatDate(endDate) : '至今'}</span>
+    <span>{formatDate(startDate)} – {endDate ? formatDate(endDate) : 'Present'}</span>
     {location && <span class="item-location"> · {location}</span>}
   </div>
   <div class="item-content">

@@ -7,17 +7,15 @@ const educations = (await getCollection('education', ({ data }) => !data.draft))
   .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
 ---
 
-<BaseLayout title="关于我">
-  <h1>关于我</h1>
+<BaseLayout title="About">
+  <h1>About</h1>
 
   <p class="intro">
-    [占位] 软件工程方向的研究生，目前就读于 LUT University。
-    对分布式系统、AI 应用开发和开源社区感兴趣。
-    喜欢把复杂的问题拆解成干净的代码。
+    Software engineering student at LUT University. Curious, exploring.
   </p>
 
   <section class="section">
-    <h2>教育背景</h2>
+    <h2>Education</h2>
     <div class="timeline">
       {educations.map((entry) => (
         <EducationItem entry={entry} />
@@ -26,11 +24,10 @@ const educations = (await getCollection('education', ({ data }) => !data.draft))
   </section>
 
   <section class="section">
-    <h2>联系方式</h2>
+    <h2>Contact</h2>
     <ul class="contact-list">
-      <li>邮件：<a href="mailto:placeholder@example.com">placeholder@example.com</a></li>
-      <li>GitHub：<a href="https://github.com/placeholder" target="_blank" rel="noopener noreferrer">github.com/placeholder</a></li>
-      <li>LinkedIn：<a href="https://linkedin.com/in/placeholder" target="_blank" rel="noopener noreferrer">linkedin.com/in/placeholder</a></li>
+      <li>Email: <a href="mailto:a17662522072@outlook.com">a17662522072@outlook.com</a></li>
+      <li>GitHub: <a href="https://github.com/bijingzhuo" target="_blank" rel="noopener noreferrer">github.com/bijingzhuo</a></li>
     </ul>
   </section>
 </BaseLayout>

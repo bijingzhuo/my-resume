@@ -8,8 +8,8 @@ interface Props {
 const { title } = Astro.props;
 
 // 站点基本信息，后续可提取到 src/config.ts
-const SITE_NAME    = '[你的名字占位]';
-const SITE_TAGLINE = '[身份/职位占位]';
+const SITE_NAME    = '毕经卓';
+const SITE_TAGLINE = 'Software Engineering · LUT University';
 
 // 规范化 base：无论 BASE_URL 是否带末尾斜杠，统一去掉，得到 '/my-resume' 或 ''
 const base = import.meta.env.BASE_URL;
@@ -21,15 +21,15 @@ const isActive = (href: string) =>
   href === '/' ? localPath === '/' : localPath.startsWith(href);
 
 const navLinks = [
-  { href: '/',           label: '首页' },
-  { href: '/projects',   label: '项目' },
-  { href: '/experience', label: '经历' },
-  { href: '/about',      label: '关于' },
+  { href: '/',           label: 'Home'       },
+  { href: '/projects',   label: 'Projects'   },
+  { href: '/experience', label: 'Experience' },
+  { href: '/about',      label: 'About'      },
 ];
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href={normalizedBase + '/favicon.svg'} />
@@ -76,8 +76,8 @@ const navLinks = [
         </nav>
 
         <div class="sidebar-footer">
-          <button id="theme-toggle" class="theme-toggle" aria-label="切换主题">
-            深色模式
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            Dark mode
           </button>
           <p class="copyright">&copy; {new Date().getFullYear()} {SITE_NAME}</p>
         </div>
@@ -105,7 +105,7 @@ const navLinks = [
         }
 
         function updateBtn() {
-          btn.textContent = getTheme() === 'dark' ? '浅色模式' : '深色模式';
+          btn.textContent = getTheme() === 'dark' ? 'Light mode' : 'Dark mode';
         }
 
         updateBtn();

@@ -18,14 +18,14 @@ const { title, description, startDate, endDate, status, tags, url, repo } = entr
 const formatDate = (date: Date) => date.toISOString().slice(0, 7);
 
 const statusMeta: Record<string, { label: string; cls: string }> = {
-  'in-progress': { label: '进行中', cls: 'badge--active'   },
-  'completed':   { label: '已完成', cls: 'badge--done'     },
-  'archived':    { label: '已归档', cls: 'badge--archived' },
+  'in-progress': { label: 'In Progress', cls: 'badge--active'   },
+  'completed':   { label: 'Completed',   cls: 'badge--done'     },
+  'archived':    { label: 'Archived',    cls: 'badge--archived' },
 };
 ---
 
 <BaseLayout title={title}>
-  <a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/projects`} class="back-link">← 所有项目</a>
+  <a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/projects`} class="back-link">← All Projects</a>
 
   <header class="project-header">
     <h1>{title}</h1>
@@ -33,7 +33,7 @@ const statusMeta: Record<string, { label: string; cls: string }> = {
 
     <div class="project-meta">
       <span class="dates">
-        {formatDate(startDate)}{endDate ? ` – ${formatDate(endDate)}` : ' – 至今'}
+        {formatDate(startDate)}{endDate ? ` – ${formatDate(endDate)}` : ' – Present'}
       </span>
       {status && (
         <span class={`badge ${statusMeta[status].cls}`}>
@@ -47,8 +47,8 @@ const statusMeta: Record<string, { label: string; cls: string }> = {
 
     {(url || repo) && (
       <div class="project-links">
-        {url  && <a href={url}  target="_blank" rel="noopener noreferrer">查看演示 ↗</a>}
-        {repo && <a href={repo} target="_blank" rel="noopener noreferrer">查看源码 ↗</a>}
+        {url  && <a href={url}  target="_blank" rel="noopener noreferrer">Demo ↗</a>}
+        {repo && <a href={repo} target="_blank" rel="noopener noreferrer">Source ↗</a>}
       </div>
     )}
   </header>

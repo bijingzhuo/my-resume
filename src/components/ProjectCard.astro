@@ -13,9 +13,9 @@ const normalizedBase = base.endsWith('/') ? base.slice(0, -1) : base;
 const formatDate = (date: Date) => date.toISOString().slice(0, 7);
 
 const statusMeta: Record<string, { label: string; cls: string }> = {
-  'in-progress': { label: '进行中', cls: 'badge--active'   },
-  'completed':   { label: '已完成', cls: 'badge--done'     },
-  'archived':    { label: '已归档', cls: 'badge--archived' },
+  'in-progress': { label: 'In Progress', cls: 'badge--active'   },
+  'completed':   { label: 'Completed',   cls: 'badge--done'     },
+  'archived':    { label: 'Archived',    cls: 'badge--archived' },
 };
 ---
 
@@ -33,7 +33,7 @@ const statusMeta: Record<string, { label: string; cls: string }> = {
 
   <p class="card-dates">
     {formatDate(startDate)}
-    {endDate ? ` – ${formatDate(endDate)}` : ' – 至今'}
+    {endDate ? ` – ${formatDate(endDate)}` : ' – Present'}
   </p>
 
   <div class="tags">

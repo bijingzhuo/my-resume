@@ -18,7 +18,7 @@ const formatDate = (date: Date) => date.toISOString().slice(0, 7);
   <div class="item-school">{school}</div>
   <div class="item-program">{degree} · {major}</div>
   <div class="item-sub">
-    <span>{formatDate(startDate)} – {endDate ? formatDate(endDate) : '在读'}</span>
+    <span>{formatDate(startDate)} – {endDate ? formatDate(endDate) : 'Present'}</span>
     {gpa && <span class="item-gpa"> · GPA {gpa}</span>}
   </div>
   <div class="item-content">

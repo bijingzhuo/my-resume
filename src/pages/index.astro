@@ -9,21 +9,18 @@ const featured = (await getCollection('projects', ({ data }) => !data.draft && d
   .slice(0, 3);
 ---
 
-<BaseLayout title="[你的名字占位]">
+<BaseLayout title="毕经卓">
   <section class="hero">
-    <h1 class="hero-name">[你的名字占位]</h1>
-    <p class="hero-tagline">软件工程 · LUT University</p>
-    <p class="hero-bio">
-      [占位] 对分布式系统和 AI 应用感兴趣，喜欢把想法做成能跑起来的东西。
-      目前在芬兰读研，偶尔写写开源项目。
-    </p>
+    <h1 class="hero-name">毕经卓</h1>
+    <p class="hero-tagline">Software Engineering · LUT University</p>
+    <p class="hero-bio">Curious, exploring.</p>
   </section>
 
   {featured.length > 0 && (
     <section class="section">
       <div class="section-header">
-        <h2>精选项目</h2>
-        <a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/projects`} class="view-all">全部项目 →</a>
+        <h2>Featured Projects</h2>
+        <a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/projects`} class="view-all">All Projects →</a>
       </div>
       <div class="project-list">
         {featured.map((project) => (
@@ -34,10 +31,10 @@ const featured = (await getCollection('projects', ({ data }) => !data.draft && d
   )}
 
   <section class="section">
-    <h2>联系方式</h2>
+    <h2>Contact</h2>
     <ul class="contact-list">
-      <li>邮件：<a href="mailto:placeholder@example.com">placeholder@example.com</a></li>
-      <li>GitHub：<a href="https://github.com/placeholder" target="_blank" rel="noopener noreferrer">github.com/placeholder</a></li>
+      <li>Email: <a href="mailto:a17662522072@outlook.com">a17662522072@outlook.com</a></li>
+      <li>GitHub: <a href="https://github.com/bijingzhuo" target="_blank" rel="noopener noreferrer">github.com/bijingzhuo</a></li>
     </ul>
   </section>
 </BaseLayout>
