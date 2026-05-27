@@ -23,7 +23,7 @@ const featured = (await getCollection('projects', ({ data }) => !data.draft && d
     <section class="section">
       <div class="section-header">
         <h2>精选项目</h2>
-        <a href={`${import.meta.env.BASE_URL}projects`} class="view-all">全部项目 →</a>
+        <a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/projects`} class="view-all">全部项目 →</a>
       </div>
       <div class="project-list">
         {featured.map((project) => (

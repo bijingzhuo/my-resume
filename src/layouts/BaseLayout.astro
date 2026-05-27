@@ -11,12 +11,12 @@ const { title } = Astro.props;
 const SITE_NAME    = '[你的名字占位]';
 const SITE_TAGLINE = '[身份/职位占位]';
 
-// BASE_URL 末尾带斜杠：开发时 '/'，部署后 '/my-resume/'
-const BASE = import.meta.env.BASE_URL;
-const basePath = BASE.slice(0, -1); // 去掉尾部斜杠，用于路径拼接和截取
+// 规范化 base：无论 BASE_URL 是否带末尾斜杠，统一去掉，得到 '/my-resume' 或 ''
+const base = import.meta.env.BASE_URL;
+const normalizedBase = base.endsWith('/') ? base.slice(0, -1) : base;
 
-// 将当前 pathname 的 base 前缀去掉，得到本地路径（始终以 / 开头）
-const localPath = Astro.url.pathname.slice(basePath.length) || '/';
+// 剥离 base 前缀后得到本地路径，始终以 / 开头
+const localPath = Astro.url.pathname.slice(normalizedBase.length) || '/';
 const isActive = (href: string) =>
   href === '/' ? localPath === '/' : localPath.startsWith(href);
 
@@ -32,8 +32,8 @@ const navLinks = [
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href={BASE + 'favicon.svg'} />
-    <link rel="icon" href={BASE + 'favicon.ico'} />
+    <link rel="icon" type="image/svg+xml" href={normalizedBase + '/favicon.svg'} />
+    <link rel="icon" href={normalizedBase + '/favicon.ico'} />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -60,14 +60,14 @@ const navLinks = [
       <!-- 侧边栏 -->
       <aside class="sidebar">
         <div class="sidebar-header">
-          <a href={BASE} class="site-name">{SITE_NAME}</a>
+          <a href={normalizedBase + '/'} class="site-name">{SITE_NAME}</a>
           <p class="site-tagline">{SITE_TAGLINE}</p>
         </div>
 
         <nav class="sidebar-nav">
           {navLinks.map(({ href, label }) => (
             <a
-              href={basePath + href}
+              href={normalizedBase + href}
               aria-current={isActive(href) ? 'page' : undefined}
             >
               {label}
