@@ -11,9 +11,18 @@ const featured = (await getCollection('projects', ({ data }) => !data.draft && d
 
 <BaseLayout title="毕经卓">
   <section class="hero">
-    <h1 class="hero-name">毕经卓</h1>
-    <p class="hero-tagline">Software Engineering · LUT University</p>
-    <p class="hero-bio">Curious, exploring.</p>
+    <div class="hero-text">
+      <h1 class="hero-name">毕经卓</h1>
+      <p class="hero-tagline">Software Engineering · LUT University</p>
+      <p class="hero-bio">Curious, exploring.</p>
+    </div>
+    <img
+      src={`${import.meta.env.BASE_URL}jingzhuo.jpg`}
+      alt="毕经卓"
+      class="hero-photo"
+      width="112"
+      height="112"
+    />
   </section>
 
   {featured.length > 0 && (
@@ -42,13 +51,21 @@ const featured = (await getCollection('projects', ({ data }) => !data.draft && d
 <style>
   /* ── Hero 区 ── */
   .hero {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-6);
+    align-items: center;
     padding-bottom: var(--space-4);
     border-bottom: 1px solid var(--color-border);
     margin-bottom: 0;
   }
 
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+  }
+
   .hero-name {
-    /* 覆盖 global.css h1 的 margin-bottom，hero 内间距自己管 */
     margin-bottom: var(--space-1);
   }
 
@@ -66,6 +83,26 @@ const featured = (await getCollection('projects', ({ data }) => !data.draft && d
     color: var(--color-fg-muted);
     max-width: 480px;
     margin-bottom: 0;
+  }
+
+  .hero-photo {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-border);
+    display: block;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-photo {
+      display: none;
+    }
   }
 
   /* ── 各区块 ── */
