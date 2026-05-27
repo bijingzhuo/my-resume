@@ -17,7 +17,7 @@ const featured = (await getCollection('projects', ({ data }) => !data.draft && d
       <p class="hero-bio">Curious, exploring.</p>
     </div>
     <img
-      src={`${import.meta.env.BASE_URL}jingzhuo.jpg`}
+      src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/jingzhuo.jpg`}
       alt="毕经卓"
       class="hero-photo"
       width="160"
